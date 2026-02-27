@@ -1,0 +1,127 @@
+
+
+networks:
+  proxy-net:
+    external: true
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    expose: ["80"]
+    networks: [proxy-net]
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:80/"]
+      interval: 30s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flask-app-frontend.rule=Host(`gravvisoft.com`) || Host(`realestate.gravvisoft.com`)"
+      - "traefik.http.routers.flask-app-frontend.entrypoints=websecure"
+      - "traefik.http.routers.flask-app-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.flask-app-frontend.service=flask-app-frontend-svc"
+      - "traefik.http.services.flask-app-frontend-svc.loadbalancer.server.port=80"
+      - "traefik.http.routers.flask-app-frontend-web.rule=Host(`gravvisoft.com`) || Host(`realestate.gravvisoft.com`)"
+      - "traefik.http.routers.flask-app-frontend-web.entrypoints=web"
+      - "traefik.http.routers.flask-app-frontend-web.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: [./backend/.env]
+    expose: ["7000"]
+    networks: [proxy-net]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flask-app-backend.rule=(Host(`gravvisoft.com`) || Host(`realestate.gravvisoft.com`)) && PathPrefix(`/api`)"
+      - "traefik.http.routers.flask-app-backend.entrypoints=websecure"
+      - "traefik.http.routers.flask-app-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.flask-app-backend.service=flask-app-backend-svc"
+      - "traefik.http.services.flask-app-backend-svc.loadbalancer.server.port=7000"
+      - "traefik.http.routers.flask-app-backend-web.rule=(Host(`gravvisoft.com`) || Host(`realestate.gravvisoft.com`)) && PathPrefix(`/api`)"
+      - "traefik.http.routers.flask-app-backend-web.entrypoints=web"
+      - "traefik.http.routers.flask-app-backend-web.middlewares=redirect-to-https,flask-app-api-strip"
+      - "traefik.http.routers.flask-app-backend.middlewares=flask-app-api-strip"
+      - "traefik.http.middlewares.flask-app-api-strip.stripprefix.prefixes=/api"
+
+  zillow_job:
+    build:
+      context: ./jobs/zillow
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env   # or jobs/zillow/.env if you create a job-specific one
+    networks: [proxy-net]
+
+
+
+# THE NEW SET UP WILL LOOK LIKE THIS TURNING TO THE MAIN GRAVVISOFT APP AND NOT THE SUBDOMAIN
+# version: '3.8'
+
+# networks:
+#   proxy-net:
+#     external: true
+
+# services:
+#   backend:
+#     build:
+#       context: ./server
+#       dockerfile: Dockerfile
+#     container_name: anxiously-backend
+#     restart: unless-stopped
+#     expose:
+#       - "7000"
+#     environment:
+#       - PORT_NUM=4005
+#     env_file:
+#       - ./server/.env
+#     networks:
+#       - proxy-net
+#     healthcheck:
+#       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4005/health"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 3
+#       start_period: 40s
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.main-back.rule=Host(`gravvisoft.com`) && PathPrefix(`/api`)"
+#       - "traefik.http.routers.main-back.entrypoints=websecure"
+#       - "traefik.http.routers.main-back.tls.certresolver=letsencrypt"
+#       - "traefik.http.routers.main-back.service=main-back-svc"
+#       - "traefik.http.services.main-back-svc.loadbalancer.server.port=4005"
+#       - "traefik.http.routers.main-back-web.rule=Host(`gravvisoft.com`) && PathPrefix(`/api`)"
+#       - "traefik.http.routers.main-back-web.entrypoints=web"
+#       - "traefik.http.routers.main-back-web.middlewares=redirect-to-https,main-api-strip"
+#       - "traefik.http.routers.main-back.middlewares=main-api-strip"
+#       - "traefik.http.middlewares.main-api-strip.stripprefix.prefixes=/api"
+
+#   frontend:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#       args:
+#         - REACT_APP_API_URL=https://gravvisoft.com/api
+#     container_name: anxiously-frontend
+#     restart: unless-stopped
+#     expose:
+#       - "80"
+#     depends_on:
+#       - backend
+#     networks:
+#       - proxy-net
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.main.rule=Host(`gravvisoft.com`)"
+#       - "traefik.http.routers.main.entrypoints=websecure"
+#       - "traefik.http.routers.main.tls.certresolver=letsencrypt"
+#       - "traefik.http.routers.main.service=main-svc"
+#       - "traefik.http.services.main-svc.loadbalancer.server.port=80"
+#       - "traefik.http.routers.main-web.rule=Host(`gravvisoft.com`)"
+#       - "traefik.http.routers.main-web.entrypoints=web"
+#       - "traefik.http.routers.main-web.middlewares=redirect-to-https"
+#       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"

@@ -1,0 +1,99 @@
+.navbar-container {
+  margin-bottom: 0;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.custom-menubar {
+  border-radius: 0;
+  box-shadow: none;
+  padding: 1rem 2rem;
+  border: none;
+  background: transparent;
+}
+
+.custom-menubar .p-menubar-start {
+  margin-right: auto;
+}
+
+.custom-menubar .p-menubar-end {
+  margin-left: auto;
+}
+
+.custom-menubar .p-menubar-root-list {
+  gap: 0.5rem;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  gap: 0.75rem;
+  margin-right: 2rem;
+}
+
+.navbar-brand .pi {
+  color: #3B82F6;
+  font-size: 1.75rem;
+}
+
+.brand-text {
+  color: #111827;
+  font-weight: 700;
+}
+
+.navbar-end {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-end .pi-bell {
+  position: relative;
+  color: #6B7280;
+  transition: color 0.2s;
+  font-size: 1.25rem;
+}
+
+.navbar-end .pi-bell:hover {
+  color: #3B82F6;
+}
+
+.active-menu-item .p-menuitem-link {
+  background-color: #EFF6FF !important;
+  color: #3B82F6 !important;
+}
+
+.p-menubar .p-menuitem-link {
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.p-menubar .p-menuitem-link:hover {
+  background-color: #F9FAFB;
+}
+
+.p-menubar .p-menuitem-icon {
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 960px) {
+  .brand-text {
+    display: none;
+  }
+
+  .custom-menubar {
+    padding: 0.75rem 1rem;
+  }
+  
+  .navbar-brand {
+    margin-right: 1rem;
+  }
+}

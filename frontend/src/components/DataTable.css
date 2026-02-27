@@ -1,0 +1,75 @@
+.datatable-card {
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: #ffffff;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.table-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.custom-datatable {
+  font-size: 0.875rem;
+}
+
+.custom-datatable .p-datatable-header {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.custom-datatable .p-datatable-thead > tr > th {
+  background-color: #F9FAFB;
+  color: #374151;
+  font-weight: 600;
+  padding: 1rem;
+  border: none;
+  border-bottom: 2px solid #E5E7EB;
+}
+
+.custom-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  border: none;
+  border-bottom: 1px solid #F3F4F6;
+  color: #111827;
+}
+
+.custom-datatable .p-datatable-tbody > tr:hover {
+  background-color: #F9FAFB;
+}
+
+.p-input-icon-left > .pi {
+  left: 0.75rem;
+}
+
+.p-input-icon-left > .p-inputtext {
+  padding-left: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-header .p-input-icon-left {
+    width: 100%;
+  }
+
+  .table-header .p-input-icon-left .p-inputtext {
+    width: 100%;
+  }
+}
