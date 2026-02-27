@@ -8,10 +8,15 @@ import jwt
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+allowed_origins = os.getenv(
+    "ALLOWED_ORIGINS",
+    "https://gravvisoft.com,http://localhost:3001"
+)
+CORS(app, origins=[o.strip() for o in allowed_origins.split(",") if o.strip()])
 
 METABASE_SECRET_KEY = os.getenv("METABASE_SECRET_KEY")
-METABASE_SITE_URL = os.getenv("METABASE_SITE_URL", "http://dash.gravvisoft.com")
+METABASE_SITE_URL = os.getenv("METABASE_SITE_URL", "https://dash.gravvisoft.com")
 METABASE_DASHBOARD_ID = int(os.getenv("METABASE_DASHBOARD_ID", "3"))
 
 
