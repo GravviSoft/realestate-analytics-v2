@@ -1,220 +1,39 @@
-# Real Estate Analytics Platform
+# Real Estate Analytics Platform (Portfolio)
 
-A full-stack real estate analytics platform with a modern React dashboard frontend and Flask backend API.
+Production-style demo: containerized data pipeline (Zillow), quality gates, and a React + Metabase dashboard, fronted by Traefik/HTTPS.
 
-## Quick Start
+## Overview
+- **Pipeline** (jobs/zillow): nightly Dockerized cron pulls Zillow public CSVs, hashes each file, loads RAW→STG, runs audits (single-sheet + post-join), and only builds marts when audits pass.
+- **Backend**: Flask API (Metabase token endpoint, health), CORS allowlist per env.
+- **Frontend**: React app embedding Metabase dashboards; Nginx-served; build-time API base via `REACT_APP_API_URL`.
+- **Infra**: Docker Compose; Traefik routing (web/websecure), env-driven config; Postgres (Neon) as warehouse.
 
-### Start with Docker (One Command)
-
+## Run locally
 ```bash
-docker compose up -d --build
+docker compose -f docker-compose.dev.yml up --build
+# frontend: http://localhost:3001, backend: http://localhost:4001
 ```
 
-This will start:
-- **Frontend Dashboard** at http://localhost:3001
-- **Backend API** at http://localhost:4001
-
-### Stop Services
-
+## Deploy (Traefik/HTTPS)
 ```bash
-docker compose down
+REACT_APP_API_URL=https://your-domain/api docker compose up -d --build
 ```
+Set in `backend/.env`: `ALLOWED_ORIGINS`, `METABASE_SECRET_KEY`, `METABASE_SITE_URL`, `METABASE_DASHBOARD_ID`, DB creds. CORS defaults include prod + localhost.
 
-## What's Included
+## Key features
+- Hash-based idempotency and skip logic (see jobs/zillow/README.md).
+- Audits: single-sheet (keys/dupes/nulls/month-end/metric null pct) and post-join (fanout, row preservation, coverage).
+- Observability: run_id + batch_id on all loads; Metabase dashboards for statuses, hashes, and join checks.
+- Hygiene: `.env` files ignored; `.env.example` templates; HTTPS and CORS configured.
 
-### Frontend (React + PrimeReact + Chart.js)
-- **Interactive Dashboard** with real-time analytics
-- **4 KPI Cards**: Revenue, Properties, Avg Value, Active Listings
-- **4 Chart Types**: Line, Bar, Pie, and Doughnut charts
-- **Data Tables**: Sortable, searchable transaction tables
-- **Responsive Design**: Mobile-friendly layout
-- **Mock Data Service**: Built-in fallback data for testing
+## Repo map
+- `frontend/` React dashboard (Metabase embed, Nginx)
+- `backend/` Flask API (token, health, CORS)
+- `jobs/zillow/` Pipeline code, SQL templates, job README
+- `docker-compose.yml` Traefik-facing stack; `docker-compose.dev.yml` local dev
 
-### Backend (Flask)
-- RESTful API endpoints
-- Database integration ready
-- Environment-based configuration
-
-## Architecture
-
-```
-flask-realestate/
-├── frontend/               # React application
-│   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   ├── pages/         # Page components
-│   │   ├── services/      # API and data services
-│   │   └── styles/        # CSS styles
-│   ├── Dockerfile         # Multi-stage build
-│   └── nginx.conf         # Nginx configuration
-├── backend/               # Flask API
-│   └── Dockerfile
-└── docker-compose.yml     # Docker configuration
-```
-
-## Docker Commands
-
-### Start Services
-```bash
-docker compose up -d --build
-```
-
-### View Logs
-```bash
-# All services
-docker compose logs -f
-
-# Specific service
-docker compose logs -f frontend
-docker compose logs -f backend
-```
-
-### Stop Services
-```bash
-docker compose down
-```
-
-### Rebuild After Changes
-```bash
-docker compose up -d --build
-```
-
-### View Service Status
-```bash
-docker compose ps
-```
-
-## Access Points
-
-### Local Development
-- **Frontend**: http://localhost:3001
-- **Backend**: http://localhost:4001
-
-### Production (via Traefik)
-- **Frontend**: https://realestate.gravvisoft.com
-- **Backend API**: https://realestate.gravvisoft.com/api
-
-## Environment Variables
-
-### Frontend
-Create `frontend/.env`:
-```bash
-REACT_APP_API_URL=http://localhost:4001/api
-```
-
-### Backend
-Create `backend/.env` with your Flask configuration.
-
-## Features
-
-### Dashboard Analytics
-- **Revenue Trends**: Monthly revenue tracking with line charts
-- **Property Distribution**: Property types breakdown with doughnut charts
-- **Regional Sales**: Sales performance by region with bar charts
-- **Transaction Management**: Searchable, sortable transaction table
-- **Real-time KPIs**: Key metrics with trend indicators
-
-### Technical Features
-- **Docker Multi-stage Builds**: Optimized production images
-- **Nginx Serving**: Fast static file serving with gzip compression
-- **Health Checks**: Built-in container health monitoring
-- **Security Headers**: X-Frame-Options, X-Content-Type-Options, etc.
-- **SPA Routing**: Proper client-side routing support
-- **Static Asset Caching**: 1-year cache for static files
-
-## Development Without Docker
-
-### Frontend Development
-```bash
-cd frontend
-npm install
-npm start
-```
-Runs on http://localhost:3000
-
-### Backend Development
-```bash
-cd backend
-pip install -r requirements.txt
-python app.py
-```
-
-## Production Deployment
-
-The application is configured for deployment behind Traefik reverse proxy with:
-- **Automatic HTTPS** via Let's Encrypt
-- **HTTP to HTTPS redirect**
-- **Load balancing** ready
-- **Health checks** for zero-downtime deployments
-
-### First Time Setup
-```bash
-# Create external network for Traefik
-docker network create proxy-net
-
-# Start services
-docker compose up -d --build
-```
-
-### Domain Configuration
-Update `docker-compose.yml` to change the domain:
-```yaml
-- "traefik.http.routers.flask-app-frontend.rule=Host(`your-domain.com`)"
-```
-
-## Troubleshooting
-
-### Port Already in Use
-If ports 3001 or 4001 are in use:
-```bash
-# Edit docker-compose.yml and change:
-ports:
-  - "3002:80"  # For frontend
-  - "4002:7000"  # For backend
-```
-
-### Clear Everything and Start Fresh
-```bash
-docker compose down
-docker system prune -a
-docker compose up -d --build
-```
-
-### View Container Details
-```bash
-# Inspect a service
-docker compose exec frontend sh
-docker compose exec backend bash
-```
-
-## Tech Stack
-
-### Frontend
-- React 18.2.0
-- PrimeReact 10.2.1 (UI Components)
-- Chart.js 4.4.1 (Charts)
-- React Router 6.20.1 (Routing)
-- Axios 1.6.2 (HTTP Client)
-- PrimeFlex 3.3.1 (Grid System)
-
-### Backend
-- Flask (Python Web Framework)
-- PostgreSQL/MySQL ready
-
-### Infrastructure
-- Docker & Docker Compose
-- Nginx (Frontend serving)
-- Traefik (Reverse proxy, production)
-
-## License
-
-This project is part of the Flask Real Estate application.
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Make your changes
-4. Test with Docker locally: `docker compose up -d --build`
-5. Submit a pull request
-# realestate-analytics-v2
+## Data sources (Zillow)
+- Overview: https://www.zillow.com/research/data
+- ZHVI: https://files.zillowstatic.com/research/public_csvs/zhvi/Metro_zhvi_uc_sfr_tier_0.33_0.67_sm_sa_month.csv
+- ZORI: https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfr_sm_month.csv
+- ZORDI: https://files.zillowstatic.com/research/public_csvs/zordi/Metro_zordi_uc_sfr_month.csv
