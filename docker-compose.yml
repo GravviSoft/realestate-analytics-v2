@@ -59,6 +59,12 @@ services:
       - ./backend/.env   # or jobs/zillow/.env if you create a job-specific one
     networks: [proxy-net]
 
+  # hazards_job:
+  #   build:
+  #     context: ./jobs/hazards
+  #     dockerfile: Dockerfile
+  #   networks: [proxy-net]
+
 
 
 # THE NEW SET UP WILL LOOK LIKE THIS TURNING TO THE MAIN GRAVVISOFT APP AND NOT THE SUBDOMAIN

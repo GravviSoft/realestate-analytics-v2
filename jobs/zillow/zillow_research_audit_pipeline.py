@@ -411,7 +411,7 @@ def main():
             print(f"✅ POST-JOIN audit row inserted: {join_name}")
 
 
-        # 6) MART → build aggregates (only if audits pass)
+        # 6) MART 1: → build aggregates (only if audits pass)
         single_non_pass = conn.execute(text("""SELECT COUNT(*) FROM ops.single_sheet_audit WHERE run_id = CAST(:run_id AS uuid) AND status NOT IN ('pass', 'skip')"""), {"run_id": run_id}).scalar()
         post_non_pass = conn.execute(text("""SELECT COUNT(*) FROM ops.post_join_audit WHERE run_id = CAST(:run_id AS uuid) AND status <> 'pass' """), {"run_id": run_id}).scalar()
 
@@ -430,6 +430,15 @@ def main():
 
             tables = ", ".join(f'{SCHEMA_NAME}.mart_us_previous_{h}M_state_date_avgs' for h in horizons)
             print(f"✅ STATE-MART-BUILT SUCCESSFUL: {tables}")
+
+            # 7) MART 2: metro-level cashflow momentum screen (latest month)
+            mart2_table = "mart_metro_cashflow_momentum_latest"
+            mart2_sql_template = (Path(__file__).parent / "sql" / "mart_metro_cashflow_momentum.sql").read_text()
+            mart2_sql = mart2_sql_template.format(SCHEMA_NAME=SCHEMA_NAME)
+
+            conn.execute(text(f'DROP TABLE IF EXISTS "{SCHEMA_NAME}"."{mart2_table}";'))
+            conn.execute(text(f'CREATE TABLE "{SCHEMA_NAME}"."{mart2_table}" AS\n{mart2_sql}'))
+            print(f"✅ MART 2 built: {SCHEMA_NAME}.{mart2_table}")
         else:
             print(f"⏭️ Skipping mart build: audits not all pass (single_sheet non-pass={single_non_pass}, post_join non-pass={post_non_pass})")
         
