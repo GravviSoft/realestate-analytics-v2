@@ -241,51 +241,51 @@ def main():
             last_hash = get_last_source_hash(conn, AUDIT_SCHEMA_NAME, AUDIT_TABLE, stg_table)
             
             ##DO NOT DELETE OR TOUCH SECTION BELOW PLEASE WHERE SOURCE FILE HASH IS CHECKED
-            # if last_hash == source_file_hash:
-            #     print("⏭️ Hash unchanged → skipping RAW + STG build for this dataset.")
-            #     hash_check_status = "unchanged"
-            #     hash_check_details = "unchanged_hash"
+            if last_hash == source_file_hash:
+                print("⏭️ Hash unchanged → skipping RAW + STG build for this dataset.")
+                hash_check_status = "unchanged"
+                hash_check_details = "unchanged_hash"
 
-            #     # We still write a full audit row (including status/reason) so nothing is blank.
-            #     status = "skip"
-            #     reason = "SKIP: unchanged source_file_hash"
+                # We still write a full audit row (including status/reason) so nothing is blank.
+                status = "skip"
+                reason = "SKIP: unchanged source_file_hash"
 
-            #     conn.execute(text(f"""
-            #         INSERT INTO "{AUDIT_SCHEMA_NAME}"."{AUDIT_TABLE}" (
-            #           dataset_name, audit_type, source_file_name, source_url,
-            #           downloaded_at, local_path,
-            #           run_id, batch_id,
-            #           key1, key2, grain,
-            #           status, reason,
-            #           source_file_hash, hash_check_status, hash_check_details
-            #         )
-            #         VALUES (
-            #           :dataset_name, 'hash_check', :source_file_name, :source_url,
-            #           :downloaded_at, :local_path,
-            #           CAST(:run_id AS uuid), CAST(:batch_id AS uuid),
-            #           :key1, :key2, :grain,
-            #           :status, :reason,
-            #           :source_file_hash, :hash_check_status, :hash_check_details
-            #         );
-            #     """), {
-            #         "dataset_name": stg_table,
-            #         "source_file_name": file_name,
-            #         "source_url": source_url,
-            #         "downloaded_at": pulled_at.isoformat(),
-            #         "local_path": str(local_path),
-            #         "run_id": run_id,
-            #         "batch_id": batch_id,
-            #         "key1": key1,
-            #         "key2": key2,
-            #         "grain": f"({key1}, {key2})",
-            #         "status": status,
-            #         "reason": reason,
-            #         "source_file_hash": source_file_hash,
-            #         "hash_check_status": hash_check_status,
-            #         "hash_check_details": hash_check_details,
-            #     })
+                conn.execute(text(f"""
+                    INSERT INTO "{AUDIT_SCHEMA_NAME}"."{AUDIT_TABLE}" (
+                      dataset_name, audit_type, source_file_name, source_url,
+                      downloaded_at, local_path,
+                      run_id, batch_id,
+                      key1, key2, grain,
+                      status, reason,
+                      source_file_hash, hash_check_status, hash_check_details
+                    )
+                    VALUES (
+                      :dataset_name, 'hash_check', :source_file_name, :source_url,
+                      :downloaded_at, :local_path,
+                      CAST(:run_id AS uuid), CAST(:batch_id AS uuid),
+                      :key1, :key2, :grain,
+                      :status, :reason,
+                      :source_file_hash, :hash_check_status, :hash_check_details
+                    );
+                """), {
+                    "dataset_name": stg_table,
+                    "source_file_name": file_name,
+                    "source_url": source_url,
+                    "downloaded_at": pulled_at.isoformat(),
+                    "local_path": str(local_path),
+                    "run_id": run_id,
+                    "batch_id": batch_id,
+                    "key1": key1,
+                    "key2": key2,
+                    "grain": f"({key1}, {key2})",
+                    "status": status,
+                    "reason": reason,
+                    "source_file_hash": source_file_hash,
+                    "hash_check_status": hash_check_status,
+                    "hash_check_details": hash_check_details,
+                })
 
-            #     continue
+                continue
 
             # Hash changed (or no prior hash) → proceed with RAW + STG
             hash_check_status = "new" if last_hash else "first_seen"
