@@ -91,7 +91,7 @@ INSERT INTO "{AUDIT_SCHEMA_NAME}"."{AUDIT_TABLE}" (
     hash_check_status,
     hash_check_details,
     CASE
-        WHEN dupes > 0 OR broken_keys > 0 OR total_joinable_keys <> row_count THEN 'fail'
+        WHEN dupes > 0 OR broken_keys > 0 OR total_joinable_keys <> row_count OR max_date IS NULL THEN 'fail'
         WHEN not_month_end_dates > 0 OR COALESCE(metric_null_pct, 0) > 1.0 THEN 'warn'
         ELSE 'pass'
     END AS status,
