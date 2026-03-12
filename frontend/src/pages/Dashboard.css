@@ -6,9 +6,9 @@
 }
 
 .dashboard-shell {
-  max-width: 1440px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 32px 28px 48px;
+  padding: 28px 20px 52px;
 }
 
 .dashboard-header {
@@ -86,22 +86,32 @@
 
 .panel-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 18px;
   margin-bottom: 24px;
   align-items: stretch;
 }
 
+/* Metabase embed card */
+.metabase-section {
+  margin: 12px 0 24px;
+}
+
+.metabase-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 18px 12px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
 .metabase-embed {
-  min-height: 420px;
   width: 100%;
 }
 
 .metabase-embed metabase-dashboard {
   display: block;
   width: 100%;
-  min-height: 1200px;
-  border: none;
 }
 
 .metabase-embed.loading,
@@ -114,7 +124,7 @@
 }
 
 .panel-grid--wide {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1.8fr 1.1fr;
 }
 
 .table-section {

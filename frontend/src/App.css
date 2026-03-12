@@ -19,15 +19,7 @@ body {
 }
 
 .app-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
-}
-
-@media (max-width: 768px) {
-  .app-content {
-    padding: 1.5rem 1rem;
-  }
+  width: 100%;
 }
 
 /* Override PrimeReact defaults */

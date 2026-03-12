@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Menubar } from 'primereact/menubar';
 import { Avatar } from 'primereact/avatar';
 import { Badge } from 'primereact/badge';
@@ -6,24 +7,25 @@ import './Navbar.css';
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const items = [
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
-      command: () => (window.location.href = '/'),
+      command: () => navigate('/'),
       className: location.pathname === '/' ? 'active-menu-item' : '',
     },
     {
       label: 'Analytics',
       icon: 'pi pi-chart-line',
-      command: () => (window.location.href = '/analytics'),
+      command: () => navigate('/analytics'),
       className: location.pathname === '/analytics' ? 'active-menu-item' : '',
     },
     {
       label: 'Reports',
       icon: 'pi pi-file',
-      command: () => (window.location.href = '/reports'),
+      command: () => navigate('/reports'),
       className: location.pathname === '/reports' ? 'active-menu-item' : '',
     },
   ];
@@ -31,7 +33,7 @@ const Navbar = () => {
   const start = (
     <div className="navbar-brand">
       <i className="pi pi-chart-bar" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i>
-      <span className="brand-text">Analytics Dashboard</span>
+      <span className="brand-text">Investor Dashboard</span>
     </div>
   );
 

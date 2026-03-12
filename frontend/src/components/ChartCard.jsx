@@ -34,6 +34,7 @@ const ChartCard = ({ title, type = 'line', data, options = {} }) => {
   const defaultOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    ...options,
     plugins: {
       legend: {
         display: true,
@@ -42,8 +43,8 @@ const ChartCard = ({ title, type = 'line', data, options = {} }) => {
       title: {
         display: false,
       },
+      ...(options.plugins || {}),
     },
-    ...options,
   };
 
   const renderChart = () => {

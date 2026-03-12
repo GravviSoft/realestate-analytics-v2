@@ -145,8 +145,13 @@ const dataService = {
   },
 
   async getMetabaseToken() {
-    const response = await axios.get(`${API_BASE_URL}/metabase/token`);
-    return response.data;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/metabase/token`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching Metabase token:', error);
+      throw error;
+    }
   },
 };
 

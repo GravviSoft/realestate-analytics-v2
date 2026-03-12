@@ -6,7 +6,6 @@ import DataTable from '../components/DataTable';
 import dataService from '../services/dataService';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import MetabaseEmbed from '../components/MetabaseEmbed';
-import { Card } from 'primereact/card';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -55,18 +54,18 @@ const Dashboard = () => {
       <div className="dashboard-shell">
         <header className="dashboard-header">
           <div className="dashboard-heading">
-            <p className="eyebrow">Real Estate Intelligence</p>
-            <h1>Analytics Dashboard</h1>
-            <p className="subtitle">Track portfolio performance, revenue, and listings in one place.</p>
+            <p className="eyebrow">Real Estate Data Analytics Portfolio</p>
+            {/* <h1>Analytics Dashboard</h1>
+            <p className="subtitle">Track portfolio performance, revenue, and listings in one place.</p> */}
           </div>
-          <div className="header-actions">
+          {/* <div className="header-actions">
             <button className="ghost-button">Export</button>
             <button className="primary-button">Add Listing</button>
-          </div>
+          </div> */}
         </header>
 
         {/* Stats Row */}
-        <section className="stats-grid">
+        {/* <section className="stats-grid">
           <StatCard
             title="Total Revenue"
             value={dashboardData.stats.totalRevenue}
@@ -99,14 +98,14 @@ const Dashboard = () => {
             trendValue="-2.3%"
             color="#F59E0B"
           />
-        </section>
+        </section> */}
 
 
         {/* Embedded Metabase dashboard */}
-        <section className="panel-grid">
-          <Card className="chart-card" title="Market Insights (Metabase)" subTitle="Live dashboard embedded from Metabase.">
+        <section className="metabase-section">
+          <div className="metabase-card">
             <MetabaseEmbed />
-          </Card>
+          </div>
         </section>
 
 
