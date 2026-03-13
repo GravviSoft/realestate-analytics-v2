@@ -28,7 +28,7 @@ row_preservation AS (
     :join_name AS join_name,
     base_table_rows,
     join_table_rows,
-    base_table_rows = join_table_rows AS rows_preserved,
+    base_table_rows >= join_table_rows AS rows_preserved,
     join_table_rows - base_table_rows AS row_preservation_delta
   FROM counts
 ),

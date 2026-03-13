@@ -171,7 +171,7 @@ const MetabaseEmbed = () => {
           width: '100%',
           border: 'none',
           height: `${embedHeight}px`,
-          minHeight: '3200px',
+          minHeight: '3100px',
           transition: 'height 0.2s ease',
         }}
       ></metabase-dashboard>
