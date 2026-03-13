@@ -2,7 +2,7 @@
 INSERT INTO "{AUDIT_SCHEMA_NAME}"."{POST_JOIN_TABLE}" (
   run_id, batch_id, audited_at,
   join_name,
-  base_table_rows, join_table_rows, rows_preserved, row_preservation_delta,
+  base_table_rows, join_table_rows, row_delta,
   distinct_keys, fanout_dupes,
   base_metric_coverage, base_metric_pct,
   metric_coverage, metric_coverage_pct,
@@ -28,8 +28,7 @@ row_preservation AS (
     :join_name AS join_name,
     base_table_rows,
     join_table_rows,
-    base_table_rows >= join_table_rows AS rows_preserved,
-    join_table_rows - base_table_rows AS row_preservation_delta
+    join_table_rows - base_table_rows AS row_delta
   FROM counts
 ),
 fanout_metric_check AS (
@@ -50,8 +49,7 @@ SELECT
   rp.join_name,
   rp.base_table_rows,
   rp.join_table_rows,
-  rp.rows_preserved,
-  rp.row_preservation_delta,
+  rp.row_delta,
   f.distinct_keys,
   f.fanout_dupes,
   f.base_metric_coverage,
@@ -62,14 +60,14 @@ SELECT
   '{right_stg}' AS right_table,
   '({key1}, {key2})' AS join_grain,
   CASE
-    WHEN '{join_type}' = 'LEFT JOIN' AND rp.row_preservation_delta IS DISTINCT FROM 0 THEN 'fail'
+    WHEN '{join_type}' = 'LEFT JOIN' AND rp.row_delta IS DISTINCT FROM 0 THEN 'fail'
     WHEN f.fanout_dupes IS DISTINCT FROM 0 THEN 'fail'
     WHEN f.metric_coverage_pct < 100.0 THEN 'warn'
     ELSE 'pass'
   END AS status,
   COALESCE(
     NULLIF(TRIM(BOTH '; ' FROM CONCAT_WS('; ',
-      CASE WHEN '{join_type}' = 'LEFT JOIN' AND rp.row_preservation_delta IS DISTINCT FROM 0 THEN 'FAIL: rows not preserved (fan-out risk)' END,
+      CASE WHEN '{join_type}' = 'LEFT JOIN' AND rp.row_delta IS DISTINCT FROM 0 THEN 'FAIL: rows not preserved (fan-out risk)' END,
       CASE WHEN f.fanout_dupes IS DISTINCT FROM 0 THEN 'FAIL: fanout duplicates detected' END,
       CASE WHEN f.metric_coverage_pct < 100.0 THEN 'WARN: metric coverage is under 100%' END
     )), ''),
