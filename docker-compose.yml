@@ -65,6 +65,13 @@ services:
   #     dockerfile: Dockerfile
   #   networks: [proxy-net]
 
+  us_regions_job:
+    build:
+      context: ./jobs/us_regions
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    networks: [proxy-net]
 
 
 # THE NEW SET UP WILL LOOK LIKE THIS TURNING TO THE MAIN GRAVVISOFT APP AND NOT THE SUBDOMAIN

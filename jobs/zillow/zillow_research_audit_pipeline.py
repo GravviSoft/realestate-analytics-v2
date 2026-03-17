@@ -131,7 +131,7 @@ def print_single_sheet_audits(conn, run_id):
 def print_post_join_audits(conn, run_id):
     rows = conn.execute(
         text("""
-            SELECT join_name, status, reason, fanout_dupes, row_preservation_delta,
+            SELECT join_name, status, reason, fanout_dupes, row_delta,
                    base_metric_pct, metric_coverage_pct
             FROM ops.post_join_audit
             WHERE run_id = :run
@@ -143,7 +143,7 @@ def print_post_join_audits(conn, run_id):
     for r in rows:
         print(
             f" - {r.join_name}: {r.status} fanout={r.fanout_dupes} "
-            f"delta_rows={r.row_preservation_delta} base_pct={r.base_metric_pct}% "
+            f"delta_rows={r.row_delta} base_pct={r.base_metric_pct}% "
             f"join_pct={r.metric_coverage_pct}% reason={r.reason}"
         )
 
