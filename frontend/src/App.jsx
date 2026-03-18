@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
+import DealAnalysis from './pages/DealAnalysis';
+import About from './pages/About';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -16,8 +18,8 @@ function App() {
         <div className="app-content">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/analytics" element={<Dashboard />} />
-            <Route path="/reports" element={<Dashboard />} />
+            <Route path="/deal-analysis" element={<DealAnalysis />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
       </div>

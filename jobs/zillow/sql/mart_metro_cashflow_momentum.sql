@@ -1,5 +1,32 @@
--- GRAIN(region_id, date)
--- Metro-level cashflow / momentum screen for the latest available month
+-- MART: metro_cashflow_momentum
+-- PURPOSE:
+-- Identify U.S. metro markets where single-family rental cash flow appears attractive
+-- and is improving, using rent-to-price yield trends from Zillow metro data.
+--
+-- BUSINESS QUESTION:
+-- Which metro markets currently show strong gross yield, improving recent momentum,
+-- and rent growth healthy enough to reduce the risk of a yield trap?
+--
+-- GRAIN:
+-- One row per (region_id, month_end) in the underlying model.
+-- Final output is filtered to the latest available month only.
+--
+-- PRIMARY USERS:
+-- Investors, acquisitions teams, analysts, and product stakeholders reviewing
+-- market-level opportunity screens.
+--
+-- KEY METRICS:
+-- gross_yield = annualized rent / home price
+-- bps_3m_vs_12m = recent yield momentum versus 12-month trend
+-- bps_12m_vs_36m = current valuation versus longer-run baseline
+--
+-- SCREEN LOGIC:
+-- 1. Require improving recent yield momentum
+-- 2. Require positive rent growth
+-- 3. Require rent growth to keep pace with or exceed home price growth
+--
+-- IMPORTANT LIMITATION:
+-- This is a market screening tool, not a full underwriting model for individual deals.
 
 WITH kpi_base AS (
   SELECT

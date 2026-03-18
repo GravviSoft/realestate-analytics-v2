@@ -37,6 +37,12 @@
   margin-right: 2rem;
 }
 
+.brand-logo {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
 .navbar-brand .pi {
   color: #3B82F6;
   font-size: 1.75rem;

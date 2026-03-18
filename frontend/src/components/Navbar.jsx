@@ -11,29 +11,34 @@ const Navbar = () => {
 
   const items = [
     {
-      label: 'Dashboard',
-      icon: 'pi pi-home',
+      label: 'Analytics',
+      icon: 'pi pi-chart-bar',
       command: () => navigate('/'),
       className: location.pathname === '/' ? 'active-menu-item' : '',
     },
     {
-      label: 'Analytics',
+      label: 'Deal Analysis',
       icon: 'pi pi-chart-line',
-      command: () => navigate('/analytics'),
-      className: location.pathname === '/analytics' ? 'active-menu-item' : '',
+      command: () => navigate('/deal-analysis'),
+      className: location.pathname === '/deal-analysis' ? 'active-menu-item' : '',
     },
     {
-      label: 'Reports',
-      icon: 'pi pi-file',
-      command: () => navigate('/reports'),
-      className: location.pathname === '/reports' ? 'active-menu-item' : '',
+      label: 'About / Hire Me',
+      icon: 'pi pi-user',
+      command: () => navigate('/about'),
+      className: location.pathname === '/about' ? 'active-menu-item' : '',
     },
   ];
 
   const start = (
     <div className="navbar-brand">
-      <i className="pi pi-chart-bar" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i>
-      <span className="brand-text">Investor Dashboard</span>
+      {/* <i className="pi pi-chart-bar" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i> */}
+      <img
+        src="/gravvisoft-logo-header-transparent.png"
+        alt="GravviSoft logo"
+        className="brand-logo"
+      />
+      <span className="brand-text"></span>
     </div>
   );
 

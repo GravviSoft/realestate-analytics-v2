@@ -1,0 +1,55 @@
+.coming-soon {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #f7f9fd 0%, #eef1f7 100%);
+}
+
+.coming-soon-content {
+  text-align: center;
+  padding: 48px;
+}
+
+.coming-soon-icon {
+  width: 80px;
+  height: 80px;
+  background: #eff6ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.coming-soon-icon i {
+  font-size: 2rem;
+  color: #3b82f6;
+}
+
+.coming-soon-content h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px;
+}
+
+.coming-soon-content p {
+  color: #6b7280;
+  font-size: 16px;
+  max-width: 420px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}

@@ -54,14 +54,27 @@ const Dashboard = () => {
       <div className="dashboard-shell">
         <header className="dashboard-header">
           <div className="dashboard-heading">
-            <p className="eyebrow">Real Estate Data Analytics Portfolio</p>
-            {/* <h1>Analytics Dashboard</h1>
-            <p className="subtitle">Track portfolio performance, revenue, and listings in one place.</p> */}
+            <p className="eyebrow">U.S. Housing Market Intelligence</p>
+            <h1>Real Estate Data Analytics Portfolio</h1>
+            <p className="subtitle">
+              I’m passionate about real estate investing, and I built this portfolio to better understand markets, evaluate opportunities, and turn public housing data into usable decision-support tools. It demonstrates practical analytics work across automated daily Zillow data pipelines, SQL-based modeling, data quality auditing, and embedded dashboards built with PostgreSQL, Python, and React.
+            </p>   
+            {/* <p className="eyebrow">
+              I’m passionate about real estate investing, and I built this portfolio to better understand markets, evaluate opportunities, and turn public housing data into usable decision-support tools. It demonstrates practical analytics work across automated daily Zillow data pipelines, SQL-based modeling, data quality auditing, and embedded dashboards built with PostgreSQL, Python, and React.
+              </p> */}
+      
+              <div className="tech-badges">
+              <span className="badge">PostgreSQL</span>
+              <span className="badge">Metabase</span>
+              <span className="badge">Python</span>
+              <span className="badge">Flask</span>
+              <span className="badge">React</span>
+              <span className="badge">Docker</span>
+              {/* <span className="badge">Zillow Data</span> */}
+              <span className="badge">Automated Data Pipelines</span>
+
+            </div>
           </div>
-          {/* <div className="header-actions">
-            <button className="ghost-button">Export</button>
-            <button className="primary-button">Add Listing</button>
-          </div> */}
         </header>
 
         {/* Stats Row */}
@@ -110,7 +123,7 @@ const Dashboard = () => {
 
 
         {/* Charts Row 1 */}
-        <section className="panel-grid panel-grid--wide">
+        {/* <section className="panel-grid panel-grid--wide">
           <ChartCard
             title="Revenue Trends"
             type="line"
@@ -131,10 +144,10 @@ const Dashboard = () => {
             type="doughnut"
             data={dashboardData.propertyTypesData}
           />
-        </section>
+        </section> */}
 
         {/* Charts Row 2 */}
-        <section className="panel-grid">
+        {/* <section className="panel-grid">
           <ChartCard
             title="Sales by Region"
             type="bar"
@@ -159,18 +172,18 @@ const Dashboard = () => {
               },
             }}
           />
-        </section>
+        </section> */}
 
 
 
         {/* Data Table */}
-        <section className="table-section">
+        {/* <section className="table-section">
           <DataTable
             title="Recent Transactions"
             data={dashboardData.recentTransactions}
             columns={transactionColumns}
           />
-        </section>
+        </section> */}
       </div>
     </div>
   );

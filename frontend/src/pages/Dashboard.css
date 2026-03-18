@@ -38,6 +38,26 @@
   margin: 6px 0 0;
   color: #4b5563;
   font-size: 14px;
+  max-width: 760px;
+  line-height: 1.6;
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.badge {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .header-actions {
