@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import DealAnalysis from './pages/DealAnalysis';
 import About from './pages/About';
+import Tools from './pages/Tools';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -18,6 +19,7 @@ function App() {
         <div className="app-content">
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/tools" element={<Tools />} />
             <Route path="/deal-analysis" element={<DealAnalysis />} />
             <Route path="/about" element={<About />} />
           </Routes>

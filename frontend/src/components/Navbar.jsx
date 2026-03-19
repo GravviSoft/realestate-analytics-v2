@@ -17,6 +17,12 @@ const Navbar = () => {
       className: location.pathname === '/' ? 'active-menu-item' : '',
     },
     {
+      label: 'Tools',
+      icon: 'pi pi-calculator',
+      command: () => navigate('/tools'),
+      className: location.pathname === '/tools' ? 'active-menu-item' : '',
+    },
+    {
       label: 'Deal Analysis',
       icon: 'pi pi-chart-line',
       command: () => navigate('/deal-analysis'),
@@ -31,8 +37,7 @@ const Navbar = () => {
   ];
 
   const start = (
-    <div className="navbar-brand">
-      {/* <i className="pi pi-chart-bar" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i> */}
+    <div className="navbar-brand" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
       <img
         src="/gravvisoft-logo-header-transparent.png"
         alt="GravviSoft logo"
