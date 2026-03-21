@@ -5,31 +5,47 @@ import PVCalculator from '../components/calculators/PVCalculator';
 import CapRateCalculator from '../components/calculators/CapRateCalculator';
 import CoCCalculator from '../components/calculators/CoCCalculator';
 import DCFCalculator from '../components/calculators/DCFCalculator';
+import CompoundInterestCalculator from '../components/calculators/CompoundInterestCalculator';
+import TaxableIncomeCalculator from '../components/calculators/TaxableIncomeCalculator';
 import './Tools.css';
 
-const TABS = [
-  { id: 'ev',      label: 'Expected Value',         icon: 'pi pi-percentage' },
-  { id: 'fv',      label: 'Future Value',            icon: 'pi pi-arrow-up-right' },
-  { id: 'pv',      label: 'Present Value',           icon: 'pi pi-arrow-down-left' },
-  { id: 'dcf',     label: 'Discounted Cash Flow',    icon: 'pi pi-chart-line' },
-  { id: 'caprate', label: 'Cap Rate',                icon: 'pi pi-building' },
-  { id: 'coc',     label: 'Cash-on-Cash Return',     icon: 'pi pi-wallet' },
+const GROUPS = [
+  {
+    label: 'Time Value of Money',
+    items: [
+      { id: 'ev',  label: 'Expected Value',      icon: 'pi pi-percentage' },
+      { id: 'fv',  label: 'Future Value',         icon: 'pi pi-arrow-up-right' },
+      { id: 'pv',  label: 'Present Value',        icon: 'pi pi-arrow-down-left' },
+      { id: 'dcf', label: 'Discounted Cash Flow', icon: 'pi pi-chart-line' },
+      { id: 'ci',  label: 'Compound Interest',    icon: 'pi pi-chart-bar' },
+    ],
+  },
+  {
+    label: 'Property Analysis',
+    items: [
+      { id: 'caprate', label: 'Cap Rate',             icon: 'pi pi-building' },
+      { id: 'coc',     label: 'Cash-on-Cash Return',  icon: 'pi pi-wallet' },
+      { id: 'ti',      label: 'Taxable Income',        icon: 'pi pi-file-edit' },
+    ],
+  },
 ];
+
+const renderCalculator = (activeTab) => {
+  switch (activeTab) {
+    case 'ev':      return <EVCalculator />;
+    case 'fv':      return <FVCalculator />;
+    case 'pv':      return <PVCalculator />;
+    case 'dcf':     return <DCFCalculator />;
+    case 'ci':      return <CompoundInterestCalculator />;
+    case 'caprate': return <CapRateCalculator />;
+    case 'coc':     return <CoCCalculator />;
+    case 'ti':      return <TaxableIncomeCalculator />;
+    default:        return null;
+  }
+};
 
 const Tools = () => {
   const [activeTab, setActiveTab] = useState('ev');
-
-  const renderCalculator = () => {
-    switch (activeTab) {
-      case 'ev':      return <EVCalculator />;
-      case 'fv':      return <FVCalculator />;
-      case 'pv':      return <PVCalculator />;
-      case 'caprate': return <CapRateCalculator />;
-      case 'dcf':     return <DCFCalculator />;
-      case 'coc':     return <CoCCalculator />;
-      default:        return null;
-    }
-  };
 
   return (
     <div className="tools-page">
@@ -42,21 +58,28 @@ const Tools = () => {
           </p>
         </div>
 
-        <div className="tools-tabs">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              className={`tools-tab ${activeTab === tab.id ? 'tools-tab--active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <i className={tab.icon}></i>
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <div className="tools-layout">
+          <aside className="tools-sidebar">
+            {GROUPS.map((group) => (
+              <div key={group.label} className="tools-sidebar-group">
+                <p className="tools-sidebar-label">{group.label}</p>
+                {group.items.map((item) => (
+                  <button
+                    key={item.id}
+                    className={`tools-sidebar-item ${activeTab === item.id ? 'tools-sidebar-item--active' : ''}`}
+                    onClick={() => setActiveTab(item.id)}
+                  >
+                    <i className={item.icon}></i>
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </aside>
 
-        <div className="tools-content">
-          {renderCalculator()}
+          <div className="tools-content">
+            {renderCalculator(activeTab)}
+          </div>
         </div>
       </div>
     </div>

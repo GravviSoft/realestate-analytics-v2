@@ -12,9 +12,9 @@
 }
 
 .tools-shell {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 36px 28px 64px;
+  padding: 36px 48px 64px;
 }
 
 .tools-header {
@@ -44,44 +44,91 @@
   max-width: 640px;
 }
 
-/* Tab bar */
-.tools-tabs {
-  display: flex;
-  gap: 2px;
-  border-bottom: 2px solid #e5e7eb;
-  margin-bottom: 32px;
-  overflow-x: auto;
-  padding-bottom: 0;
+/* Sidebar layout */
+.tools-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: start;
 }
 
-.tools-tab {
-  display: inline-flex;
+.tools-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 24px;
+}
+
+.tools-sidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tools-sidebar-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+  margin: 0 0 6px 8px;
+}
+
+.tools-sidebar-item {
+  display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 10px 16px;
+  gap: 9px;
+  padding: 9px 12px;
   font-size: 13px;
-  font-weight: 600;
-  color: #6b7280;
+  font-weight: 500;
+  color: #4b5563;
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
+  border-radius: 8px;
   cursor: pointer;
-  white-space: nowrap;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-.tools-tab:hover {
+.tools-sidebar-item:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.tools-sidebar-item--active {
+  background: #eff6ff;
   color: #1d4ed8;
+  font-weight: 600;
 }
 
-.tools-tab--active {
-  color: #1d4ed8;
-  border-bottom-color: #1d4ed8;
-}
-
-.tools-tab i {
+.tools-sidebar-item i {
   font-size: 0.85rem;
+  width: 16px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .tools-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tools-sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tools-sidebar-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tools-sidebar-label {
+    display: none;
+  }
 }
 
 /* Calculator card */
@@ -295,6 +342,14 @@
   letter-spacing: 0.05em;
 }
 
+/* Compound interest chart */
+.ci-chart-wrapper {
+  margin-top: 32px;
+  height: 300px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 24px;
+}
+
 /* DCF mode toggle */
 .dcf-toggle {
   display: inline-flex;
@@ -321,6 +376,134 @@
   background: white;
   color: #1d4ed8;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Taxable income calculator */
+.ti-depreciation-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ti-negative {
+  color: #16a34a !important;
+}
+
+.ti-estimate-btn {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.ti-estimate-btn:hover {
+  color: #1d4ed8;
+}
+
+/* Depreciation schedule */
+.ti-depr-schedule {
+  margin-top: 32px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ti-depr-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ti-depr-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.ti-depr-bar-track {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ti-depr-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.ti-depr-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.ti-depr-stat {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ti-depr-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+}
+
+.ti-depr-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.ti-depr-stat-hint {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.ti-claimed { color: #1d4ed8; }
+.ti-remaining { color: #0f172a; }
+.ti-recapture { color: #ef4444; }
+
+.ti-charts {
+  margin-top: 32px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.ti-chart-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ti-chart-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin: 0;
 }
 
 @media (max-width: 700px) {

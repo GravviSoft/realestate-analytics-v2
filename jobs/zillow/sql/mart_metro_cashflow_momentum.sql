@@ -82,14 +82,23 @@ bps_momentum_valuation AS (
       ELSE 'Strongly Deteriorating'
     END AS momentum_3m_vs_12m,
     CASE
-      WHEN bps_12m_vs_36m >= 25 THEN 'Extremely Cheap vs Baseline'
-      WHEN bps_12m_vs_36m >= 10 THEN 'Very Cheap vs Baseline'
-      WHEN bps_12m_vs_36m >= 1 THEN 'Slightly Cheap'
-      WHEN bps_12m_vs_36m > -1 THEN 'At Baseline'
-      WHEN bps_12m_vs_36m > -10 THEN 'Slightly Rich'
-      WHEN bps_12m_vs_36m > -25 THEN 'Very Rich vs Baseline'
-      ELSE 'Extremely Rich vs Baseline'
+      WHEN bps_12m_vs_36m >= 25 THEN 'Highly Attractive vs Baseline'
+      WHEN bps_12m_vs_36m >= 10 THEN 'Attractive vs Baseline'
+      WHEN bps_12m_vs_36m >= 1 THEN 'Slightly Attractive vs Baseline'
+      WHEN bps_12m_vs_36m > -1 THEN 'In Line with Baseline'
+      WHEN bps_12m_vs_36m > -10 THEN 'Slightly Unattractive vs Baseline'
+      WHEN bps_12m_vs_36m > -25 THEN 'Unattractive vs Baseline'
+      ELSE 'Highly Unattractive vs Baseline'
     END AS valuation_12m_vs_36m
+    -- CASE
+    --   WHEN bps_12m_vs_36m >= 25 THEN 'Extremely Cheap vs Baseline'
+    --   WHEN bps_12m_vs_36m >= 10 THEN 'Very Cheap vs Baseline'
+    --   WHEN bps_12m_vs_36m >= 1 THEN 'Slightly Cheap'
+    --   WHEN bps_12m_vs_36m > -1 THEN 'At Baseline'
+    --   WHEN bps_12m_vs_36m > -10 THEN 'Slightly Rich'
+    --   WHEN bps_12m_vs_36m > -25 THEN 'Very Rich vs Baseline'
+    --   ELSE 'Extremely Rich vs Baseline'
+    -- END AS valuation_12m_vs_36m
   FROM calc_yield_momentum_spread
 )
 SELECT
