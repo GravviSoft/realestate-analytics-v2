@@ -420,12 +420,28 @@ def main():
             mart_sql = mart_sql_path.read_text()
             horizons = (12, 36)  # last 12 months,  last 36 months
 
+            def table_exists(conn, schema, table):
+                return conn.execute(text("""
+                    SELECT EXISTS (
+                        SELECT 1 FROM information_schema.tables
+                        WHERE table_schema = :schema AND table_name = :table
+                    )
+                """), {"schema": schema, "table": table}).scalar()
+
             for horizon in horizons:
                 table = f'mart_us_previous_{horizon}M_state_date_avgs'
-                conn.execute(text(f'DROP TABLE IF EXISTS "{SCHEMA_NAME}"."{table}";'))
+                if not table_exists(conn, SCHEMA_NAME, table):
+                    conn.execute(
+                        text(f'CREATE TABLE "{SCHEMA_NAME}"."{table}" AS SELECT *, CAST(NULL AS uuid) AS snapshot_run_id, CAST(NULL AS timestamptz) AS snapshot_date FROM ({mart_sql}) AS _init'),
+                        {"horizon_months": horizon},
+                    )
+                    conn.execute(text(f'DELETE FROM "{SCHEMA_NAME}"."{table}"'))
+                else:
+                    # Delete any prior snapshot for this run (idempotent re-runs)
+                    conn.execute(text(f'DELETE FROM "{SCHEMA_NAME}"."{table}" WHERE snapshot_run_id = CAST(:run_id AS uuid)'), {"run_id": run_id})
                 conn.execute(
-                    text(f'CREATE TABLE "{SCHEMA_NAME}"."{table}" AS\n{mart_sql}'),
-                    {"horizon_months": horizon},
+                    text(f'INSERT INTO "{SCHEMA_NAME}"."{table}" SELECT *, CAST(:run_id AS uuid), CAST(:snapshot_date AS timestamptz) FROM ({mart_sql}) AS _mart'),
+                    {"horizon_months": horizon, "run_id": run_id, "snapshot_date": run_started_at.isoformat()},
                 )
 
             tables = ", ".join(f'{SCHEMA_NAME}.mart_us_previous_{h}M_state_date_avgs' for h in horizons)
@@ -436,8 +452,15 @@ def main():
             mart2_sql_template = (Path(__file__).parent / "sql" / "mart_metro_cashflow_momentum.sql").read_text()
             mart2_sql = mart2_sql_template.format(SCHEMA_NAME=SCHEMA_NAME)
 
-            conn.execute(text(f'DROP TABLE IF EXISTS "{SCHEMA_NAME}"."{mart2_table}";'))
-            conn.execute(text(f'CREATE TABLE "{SCHEMA_NAME}"."{mart2_table}" AS\n{mart2_sql}'))
+            if not table_exists(conn, SCHEMA_NAME, mart2_table):
+                conn.execute(text(f'CREATE TABLE "{SCHEMA_NAME}"."{mart2_table}" AS SELECT *, CAST(NULL AS uuid) AS snapshot_run_id, CAST(NULL AS timestamptz) AS snapshot_date FROM ({mart2_sql}) AS _init'))
+                conn.execute(text(f'DELETE FROM "{SCHEMA_NAME}"."{mart2_table}"'))
+            else:
+                conn.execute(text(f'DELETE FROM "{SCHEMA_NAME}"."{mart2_table}" WHERE snapshot_run_id = CAST(:run_id AS uuid)'), {"run_id": run_id})
+            conn.execute(
+                text(f'INSERT INTO "{SCHEMA_NAME}"."{mart2_table}" SELECT *, CAST(:run_id AS uuid), CAST(:snapshot_date AS timestamptz) FROM ({mart2_sql}) AS _mart2'),
+                {"run_id": run_id, "snapshot_date": run_started_at.isoformat()},
+            )
             print(f"✅ MART 2 built: {SCHEMA_NAME}.{mart2_table}")
         else:
             print(f"⏭️ Skipping mart build: audits not all pass (single_sheet non-pass={single_non_pass}, post_join non-pass={post_non_pass})")

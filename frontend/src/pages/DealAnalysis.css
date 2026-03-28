@@ -1,55 +1,123 @@
-.coming-soon {
+.deal-analysis-page {
   min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(180deg, #f7f9fd 0%, #eef1f7 100%);
 }
 
-.coming-soon-content {
-  text-align: center;
-  padding: 48px;
+.deal-analysis-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 36px 48px 64px;
 }
 
-.coming-soon-icon {
-  width: 80px;
-  height: 80px;
-  background: #eff6ff;
-  border-radius: 50%;
+/* Header */
+.da-header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 24px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 16px;
 }
 
-.coming-soon-icon i {
-  font-size: 2rem;
-  color: #3b82f6;
+.da-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 4px;
 }
 
-.coming-soon-content h1 {
-  font-size: 32px;
+.da-header h1 {
+  font-size: 28px;
   font-weight: 700;
   color: #0f172a;
-  margin: 0 0 12px;
+  margin: 0;
 }
 
-.coming-soon-content p {
-  color: #6b7280;
-  font-size: 16px;
-  max-width: 420px;
-  margin: 0 auto 24px;
-  line-height: 1.6;
+/* Tab strip */
+.da-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.coming-soon-badge {
-  display: inline-block;
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-  border-radius: 20px;
-  padding: 6px 18px;
-  font-size: 13px;
+.da-tab {
+  padding: 10px 22px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  border: none;
+  background: none;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.da-tab--active {
+  color: #1d4ed8;
+  border-bottom-color: #1d4ed8;
+}
+
+.da-tab--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.da-tab-soon {
+  font-size: 10px;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #9ca3af;
+  border-radius: 4px;
+  padding: 2px 5px;
+  letter-spacing: 0.04em;
+}
+
+/* Deal grid */
+.deal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Empty state */
+.deal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 14px;
+  text-align: center;
+}
+
+.deal-empty .pi {
+  font-size: 3rem;
+  color: #d1d5db;
+}
+
+.deal-empty h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0;
+}
+
+.deal-empty p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .deal-analysis-shell { padding: 24px 16px 48px; }
+  .da-header { flex-direction: column; }
+}
+
+@media (max-width: 500px) {
+  .da-tabs { overflow-x: auto; }
 }
