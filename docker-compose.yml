@@ -74,6 +74,29 @@ services:
     networks: [proxy-net]
 
 
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=beau@gravvisoft.com
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - proxy-net
+    restart: unless-stopped 
+
+
 # THE NEW SET UP WILL LOOK LIKE THIS TURNING TO THE MAIN GRAVVISOFT APP AND NOT THE SUBDOMAIN
 # version: '3.8'
 
