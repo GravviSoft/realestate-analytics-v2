@@ -417,7 +417,7 @@ def main():
 
         if single_non_pass == 0 and post_non_pass == 0:
             mart_sql_path = Path(__file__).parent / "sql" / "mart_state_gross_yield.sql"
-            mart_sql = mart_sql_path.read_text()
+            mart_sql = mart_sql_path.read_text().rstrip().rstrip(';')
             horizons = (12, 36)  # last 12 months,  last 36 months
 
             def table_exists(conn, schema, table):
@@ -449,7 +449,7 @@ def main():
 
             # 7) MART 2: metro-level cashflow momentum screen (latest month)
             mart2_table = "mart_metro_cashflow_momentum_latest"
-            mart2_sql_template = (Path(__file__).parent / "sql" / "mart_metro_cashflow_momentum.sql").read_text()
+            mart2_sql_template = (Path(__file__).parent / "sql" / "mart_metro_cashflow_momentum.sql").read_text().rstrip().rstrip(';')
             mart2_sql = mart2_sql_template.format(SCHEMA_NAME=SCHEMA_NAME)
 
             if not table_exists(conn, SCHEMA_NAME, mart2_table):
