@@ -133,4 +133,4 @@ ORDER BY
   gross_yield_trailing_12m_avg DESC, -- 1) highest yield first
   bps_3m_vs_12m DESC,                -- 2) fastest recent improvement
   bps_12m_vs_36m DESC,               -- 3) cheap vs longer baseline
-  rent_yoy_pct DESC;                 -- 4) strongest rent growth
+  rent_yoy_pct DESC                  -- 4) strongest rent growth

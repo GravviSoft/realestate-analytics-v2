@@ -31,4 +31,4 @@ SELECT
   DENSE_RANK() OVER (ORDER BY gross_yield DESC) AS rank
 FROM calc_avgs AS a
 LEFT JOIN real_estate.us_states AS us
-  ON a.state_name = us.state_code;
+  ON a.state_name = us.state_code
