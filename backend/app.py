@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import os
 import time
 import jwt
+import psycopg2
+import psycopg2.extras
 
 load_dotenv()
 
@@ -46,6 +48,29 @@ def metabase_token():
         token = token.decode("utf-8")
 
     return jsonify({"token": token, "instanceUrl": METABASE_SITE_URL})
+
+
+def get_db():
+    return psycopg2.connect(os.getenv("NEONPOSTGRES_URL"))
+
+
+@app.route("/deals")
+@app.route("/api/deals")
+def deals():
+    try:
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cur.execute("""
+            SELECT * FROM rentals.deals
+            WHERE is_active = TRUE
+            ORDER BY created_at DESC
+        """)
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        return jsonify([dict(r) for r in rows])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

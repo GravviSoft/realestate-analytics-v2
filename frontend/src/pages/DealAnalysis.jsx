@@ -3,7 +3,7 @@ import DealCard from '../components/deals/DealCard';
 import DealDetail from '../components/deals/DealDetail';
 import './DealAnalysis.css';
 
-const API_URL = 'https://rentals.gravvisoft.com/api/deals';
+const API_URL = `${process.env.REACT_APP_API_URL || 'https://gravvisoft.com/api'}/deals`;
 
 const EmptyState = () => (
   <div className="deal-empty">

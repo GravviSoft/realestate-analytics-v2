@@ -52,27 +52,50 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-shell">
-        <header className="dashboard-header">
-          <div className="dashboard-heading">
-            <p className="eyebrow">U.S. Housing Market Intelligence</p>
-            <h1>Real Estate Data Analytics Portfolio</h1>
-            <p className="subtitle">
-              I’m passionate about real estate investing, and I built this portfolio to better understand markets, evaluate opportunities, and turn public housing data into usable decision-support tools. It demonstrates practical analytics work across automated daily Zillow data pipelines, SQL-based modeling, data quality auditing, and embedded dashboards built with PostgreSQL, Python, and React.
-            </p>   
-            {/* <p className="eyebrow">
-              I’m passionate about real estate investing, and I built this portfolio to better understand markets, evaluate opportunities, and turn public housing data into usable decision-support tools. It demonstrates practical analytics work across automated daily Zillow data pipelines, SQL-based modeling, data quality auditing, and embedded dashboards built with PostgreSQL, Python, and React.
-              </p> */}
-      
-              <div className="tech-badges">
-              <span className="badge">PostgreSQL</span>
-              <span className="badge">Metabase</span>
-              <span className="badge">Python</span>
-              <span className="badge">Flask</span>
-              <span className="badge">React</span>
-              <span className="badge">Docker</span>
-              {/* <span className="badge">Zillow Data</span> */}
-              <span className="badge">Automated Data Pipelines</span>
-
+        <header className="dashboard-hero">
+          <div className="dashboard-hero__inner">
+            <div className="dashboard-hero__left">
+              <p className="hero-eyebrow">
+                <span className="hero-eyebrow__dot" />
+                U.S. Housing Market Intelligence
+              </p>
+              <h1 className="hero-title">Real Estate Data Analytics Portfolio</h1>
+              <p className="hero-subtitle">
+                Built to understand markets, evaluate opportunities, and turn public Zillow housing data into decision-support tools — featuring automated daily data pipelines, SQL modeling, data quality auditing, and embedded dashboards.
+              </p>
+              <div className="hero-badges">
+                <span className="hero-badge">PostgreSQL</span>
+                <span className="hero-badge">Python</span>
+                <span className="hero-badge">Flask</span>
+                <span className="hero-badge">React</span>
+                <span className="hero-badge">Docker</span>
+                <span className="hero-badge">Metabase</span>
+                <span className="hero-badge">Zillow API</span>
+              </div>
+            </div>
+            <div className="dashboard-hero__right">
+              <div className="hero-stat-card">
+                <div className="hero-stat-card__live">
+                  <span className="hero-live-dot" />
+                  Live Data
+                </div>
+                <div className="hero-stats-row">
+                  <div className="hero-stat">
+                    <span className="hero-stat__num">Daily</span>
+                    <span className="hero-stat__label">Refresh</span>
+                  </div>
+                  <div className="hero-stat-divider" />
+                  <div className="hero-stat">
+                    <span className="hero-stat__num">3</span>
+                    <span className="hero-stat__label">Datasets</span>
+                  </div>
+                  <div className="hero-stat-divider" />
+                  <div className="hero-stat">
+                    <span className="hero-stat__num">330+</span>
+                    <span className="hero-stat__label">U.S. Metros</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </header>
